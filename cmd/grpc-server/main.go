@@ -31,7 +31,7 @@ func main() {
 	cfg := config.GetConfigInstance()
 
 	log.Logger = zerolog.New(os.Stdout).With().Timestamp().Caller().Logger().Output(zerolog.ConsoleWriter{Out: os.Stderr})
-	hook, err := graylog.NewGraylogHook(cfg.Gelf.Url)
+	hook, err := graylog.NewGraylogHook(cfg.Gelf.URL)
 	if err != nil {
 		panic(err)
 	}

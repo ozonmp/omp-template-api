@@ -38,7 +38,7 @@ type Database struct {
 
 // Gelf - contains all parameters gelf.
 type Gelf struct {
-	Url string `yaml:"url"`
+	URL string `yaml:"url"`
 }
 
 // Grpc - contains parameter address grpc.
