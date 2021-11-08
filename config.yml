@@ -32,7 +32,7 @@ status:
   versionPath: /version
 
 gelf:
-  url: "udp://0.0.0.0:12201"
+  url: "udp://graylog:12201"
 
 database:
   host: postgres
