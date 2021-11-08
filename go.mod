@@ -4,9 +4,11 @@ go 1.16
 
 require (
 	github.com/HdrHistogram/hdrhistogram-go v1.1.2 // indirect
+	github.com/aphistic/golf v0.0.0-20180712155816-02c07f170c5a // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware v1.3.0
 	github.com/grpc-ecosystem/go-grpc-prometheus v1.2.0
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.6.0
+	github.com/halink0803/zerolog-graylog-hook v0.0.0-20180726102656-e138ca268b12 // indirect
 	github.com/jackc/pgx/v4 v4.13.0
 	github.com/jmoiron/sqlx v1.3.4
 	github.com/lib/pq v1.10.3

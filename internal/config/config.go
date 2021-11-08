@@ -36,6 +36,11 @@ type Database struct {
 	Driver     string `yaml:"driver"`
 }
 
+// Gelf - contains all parameters gelf.
+type Gelf struct {
+	Url string `yaml:"url"`
+}
+
 // Grpc - contains parameter address grpc.
 type Grpc struct {
 	Port              int    `yaml:"port"`
@@ -101,6 +106,7 @@ type Config struct {
 	Jaeger   Jaeger   `yaml:"jaeger"`
 	Kafka    Kafka    `yaml:"kafka"`
 	Status   Status   `yaml:"status"`
+	Gelf     Gelf     `yaml:"gelf"`
 }
 
 // ReadConfigYML - read configurations from file and init instance Config.

@@ -3,7 +3,9 @@ package main
 import (
 	"flag"
 	"fmt"
+	"os"
 
+	"github.com/halink0803/zerolog-graylog-hook/graylog"
 	"github.com/pressly/goose/v3"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
@@ -27,6 +29,13 @@ func main() {
 		log.Fatal().Err(err).Msg("Failed init configuration")
 	}
 	cfg := config.GetConfigInstance()
+
+	log.Logger = zerolog.New(os.Stdout).With().Timestamp().Caller().Logger().Output(zerolog.ConsoleWriter{Out: os.Stderr})
+	hook, err := graylog.NewGraylogHook(cfg.Gelf.Url)
+	if err != nil {
+		panic(err)
+	}
+	log.Logger = log.Hook(hook)
 
 	migration := flag.Bool("migration", true, "Defines the migration start option")
 	flag.Parse()

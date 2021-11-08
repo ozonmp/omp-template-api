@@ -6,11 +6,6 @@ services:
       context: .
       dockerfile: Dockerfile
     restart: unless-stopped
-    logging:
-      driver: 'gelf'
-      options:
-        gelf-address: 'udp://localhost:12201'
-        tag: omp-template-api
     networks:
       - ompnw
     depends_on:
@@ -175,8 +170,17 @@ services:
     volumes:
       - "./data/grafana:/var/lib/grafana"
 
+  mongodb:
+    image: mongo:4.2
+    volumes:
+      - mongodata:/data/db
+    networks:
+      - ompnw
+  # Elasticsearch: https://www.elastic.co/guide/en/elasticsearch/reference/7.10/docker.html
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch-oss:7.10.2
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
     environment:
       - http.host=0.0.0.0
       - transport.host=localhost
@@ -186,27 +190,14 @@ services:
       memlock:
         soft: -1
         hard: -1
-    deploy:
-      resources:
-        limits:
-          memory: 1g
+    mem_limit: 1g
     networks:
       - ompnw
-    volumes:
-      - esdata:/usr/share/elasticsearch/data
-  # Elasticsearch: https://www.elastic.co/guide/en/elasticsearch/reference/6.x/docker.html
-
-  mongo:
-    image: mongo:4.2
-    restart: always
-    networks:
-      - ompnw
-    volumes:
-      - mongodata:/data/db
-
   # Graylog: https://hub.docker.com/r/graylog/graylog/
   graylog:
-    image: graylog/graylog:4.0
+    image: graylog/graylog:4.2
+    volumes:
+      - graylogdata:/usr/share/graylog/data
     environment:
       # CHANGE ME (must be at least 16 characters)!
       - GRAYLOG_PASSWORD_SECRET=somepasswordpepper
@@ -214,13 +205,12 @@ services:
       - GRAYLOG_ROOT_PASSWORD_SHA2=8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918
       - GRAYLOG_HTTP_EXTERNAL_URI=http://127.0.0.1:9000/
     entrypoint: /usr/bin/tini -- wait-for-it elasticsearch:9200 --  /docker-entrypoint.sh
-    networks:
-      - ompnw
     links:
-      - mongo
+      - mongodb:mongo
       - elasticsearch
+    restart: always
     depends_on:
-      - mongo
+      - mongodb
       - elasticsearch
     ports:
       # Graylog web interface and REST API
@@ -233,7 +223,8 @@ services:
       - 12201:12201
       # GELF UDP
       - 12201:12201/udp
-    restart: always
+    networks:
+      - ompnw
 
 volumes:
   pgdata:
@@ -241,6 +232,8 @@ volumes:
   esdata:
     driver: local
   mongodata:
+    driver: local
+  graylogdata:
     driver: local
 
 networks:

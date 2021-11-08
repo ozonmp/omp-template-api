@@ -25,7 +25,7 @@ func NewTracer(cfg *config.Config) (io.Closer, error) {
 			LocalAgentHostPort: cfg.Jaeger.Host + cfg.Jaeger.Port,
 		},
 	}
-	tracer, closer, err := cfgTracer.NewTracer(jaegercfg.Logger(jaeger.StdLogger))
+	tracer, closer, err := cfgTracer.NewTracer()
 	if err != nil {
 		log.Err(err).Msgf("failed init jaeger: %v", err)
 
