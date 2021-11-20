@@ -38,9 +38,10 @@ func main() {
 		Str("environment", cfg.Project.Environment).
 		Msgf("Starting service: %s", cfg.Project.Name)
 
-	// default: zerolog.SetGlobalLevel(zerolog.InfoLevel)
 	if cfg.Project.Debug {
 		zerolog.SetGlobalLevel(zerolog.DebugLevel)
+	} else {
+		zerolog.SetGlobalLevel(zerolog.InfoLevel)
 	}
 
 	dsn := fmt.Sprintf("host=%v port=%v user=%v password=%v dbname=%v sslmode=%v",
