@@ -99,7 +99,7 @@ services:
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,OUTSIDE:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-    command: sh -c "((sleep 15 && kafka-topics --create --zookeeper zookeeper:32181 --replication-factor 1 --partitions 1 --topic templates)&) && /etc/confluent/docker/run"
+    command: sh -c "((sleep 15 && kafka-topics --create --bootstrap-server kafka:9092 --replication-factor 1 --partitions 1 --topic templates)&) && /etc/confluent/docker/run"
     networks:
       - ompnw
 
