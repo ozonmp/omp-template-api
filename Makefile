@@ -80,16 +80,32 @@ deps-go:
 	python -m pip install grpcio-tools grpclib protobuf
 
 .PHONY: build
-build: generate .build
+build: generate .download-go .build
 
 .PHONY: build-go
-build-go: generate-go .build
+build-go: generate-go .download-go .build
+
+.download-go:
+	go mod download
 
 .build:
-	go mod download && CGO_ENABLED=0  go build \
+	CGO_ENABLED=0  go build \
 		-tags='no_mysql no_sqlite3' \
 		-ldflags=" \
 			-X 'github.com/$(SERVICE_PATH)/internal/config.version=$(VERSION)' \
 			-X 'github.com/$(SERVICE_PATH)/internal/config.commitHash=$(COMMIT_HASH)' \
 		" \
 		-o ./bin/grpc-server$(shell go env GOEXE) ./cmd/grpc-server/main.go
+
+# ----------------------------------------------------------------
+#                  Docker commands
+# ----------------------------------------------------------------
+
+.PHONY: docker-install-deps-go
+docker-install-deps-go: deps-go .generate-install-buf
+
+.PHONY: docker-download-deps-go
+docker-download-deps-go: .download-go
+
+.PHONY: docker-build-go
+docker-build-go: .generate-go .generate-finalize-go .build
