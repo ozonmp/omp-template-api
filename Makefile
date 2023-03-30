@@ -9,7 +9,7 @@ SERVICE_NAME=omp-template-api
 SERVICE_PATH=ozonmp/omp-template-api
 
 PGV_VERSION:="v0.6.1"
-BUF_VERSION:="v0.56.0"
+BUF_VERSION:="v1.16.0"
 
 OS_NAME=$(shell uname -s)
 OS_ARCH=$(shell uname -m)
