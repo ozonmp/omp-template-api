@@ -4,9 +4,9 @@ plugins:
     out: pypkg/omp-template-api
     strategy: directory
 
-  - plugin: buf.build/protocolbuffers/pyi
+  - plugin: mypy
     out: pypkg/omp-template-api
-    # strategy: directory
+    strategy: directory
 
   - plugin: grpclib_python
     out: pypkg/omp-template-api

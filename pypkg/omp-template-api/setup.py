@@ -8,5 +8,6 @@ setuptools.setup(
     description="GRPC python client for omp-template-api",
     url="https://github.com/ozonmp/omp-template-api",
     packages=setuptools.find_packages(),
+    package_data={"ozonmp.omp_template_api.v1": ["omp_template_api_pb2.pyi"]},
     python_requires='>=3.5',
 )
